@@ -66,6 +66,7 @@ findElemsToHide = (selectorPair) => {
 }
 
 findElemSiblings = (elems) => {
+  // If only one recipe element
   if (elems.length === 1) {
     let el = elems[0]
     // http://youmightnotneedjquery.com/#siblings
@@ -73,8 +74,23 @@ findElemSiblings = (elems) => {
       return child !== el
     })
   } else {
-    console.warn('Found multiple matches! Not support yet')
-    return []
+    // Else: multiple recipe elements (eg. sibling elems that are image shims, etc; eg. pinchofyum.com)
+    // Check if the valid (show) elems are siblings (ie. all elem parents are equal)
+    parentTest = elems[0].parentNode
+    let elemsAreSiblings = elems.every((elem) => {
+      return elem.parentNode === parentTest
+    })
+
+    if (elemsAreSiblings) {
+      // Proceed similarly to case where only 1 elem (above), but matching all recipe elems
+      return Array.prototype.filter.call(parentTest.children, (child) => {
+        return !elems.includes(child)
+      })
+    } else {
+      // Elems are NOT siblings... no idea how to process this yet!!
+      console.warn('Recipe elements detected on multiple levels. Cannot proceed (yet!)')
+      return []
+    }
   }
 }
 
@@ -99,11 +115,11 @@ switch (elemsToShow.length) {
     console.log('No valid recipe elements detected.')
     break
 
-  case 1:
+/*   case 1:
     console.log('Found 1 recipe elem:', elemsToShow[0])
     let siblings = findElemSiblings(elemsToShow)
     console.log(`Found ${siblings.length} sibling elems`, siblings)
-
+    
     if (DEBUG_WITH_COLORS) {
       // Highlight elems to show/hide instead of hiding them
       // Note: this is not a foolproof debug, but can be helpful
@@ -118,9 +134,29 @@ switch (elemsToShow.length) {
         siblings[i].style.display = 'none'
       }
     }
-    break
-  
-  default:
+    break */
+    
+    default:
     console.log(`Found ${elemsToShow.length} recipe elems:`)
     console.log(elemsToShow)
+    let siblings = findElemSiblings(elemsToShow)
+    console.log(`Found ${siblings.length} sibling elems`, siblings)
+
+    if (DEBUG_WITH_COLORS) {
+      // Highlight elems to show/hide instead of hiding them
+      // Note: this is not a foolproof debug, but can be helpful
+      // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
+      for (let i = 0; i < siblings.length; i++) {
+        siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
+      }
+      for (let i = 0; i < elemsToShow.length; i++) {
+        elemsToShow[i].style.backgroundColor = DEBUG_COLOR_SHOW
+      }
+    } else {
+      // Hide the unwanted elems
+      for (let i = 0; i < siblings.length; i++) {
+        siblings[i].style.display = 'none'
+      }
+    }
+    break
 }
