@@ -1,39 +1,37 @@
-// const selectorHide = '.entry-content > *:not(.tasty-recipes):not(.tasty-recipes-image-shim)';
-// const selectorShow = '.tasty-recipes, .tasty-recipes-image-shim';
-console.log('hello from content.js')
+const DEBUG_WITH_COLORS = false
+const DEBUG_COLOR_SHOW = 'rgba(102, 255, 102, 0.5)'
+const DEBUG_COLOR_HIDE = 'rgba(255, 102, 102, 0.5)'
 
-const CSS_SHOW_CLASS = 'smtr-show'
-const CSS_HIDE_CLASS = 'smtr-hide'
-const CSS_HIDE_SUFFIX = ' > * '
 const selectorPairs = [
   {
     // pinchofyum.com
     // https://pinchofyum.com/green-curry
     // TODO: check if need to split selectors on comma (for correct behaviour of :not(CSS_SHOW_CLASS) selector))
-    show: '.tasty-recipes', // , .tasty-recipes-image-shim
+    show: '.tasty-recipes, .tasty-recipes-image-shim', // , .tasty-recipes-image-shim
     hide: '.entry-content'
   } ,
   {
     // iamafoodblog.com
     // http://iamafoodblog.com/egyptian-kosheri-rice-recipe/
-    show: '.recipe *',
+    show: '.recipe',
     hide: '.recipe-body*'
   },
   {
     // foodiecrush.com
-    show: '.easyrecipe *',
+    // https://www.foodiecrush.com/spiralized-butternut-squash-and-apple-salad-with-turkey/
+    show: '.easyrecipe',
     hide: '.entry_content'
-  },
+  }/* ,
   {
     // gimmesomeoven.com
-    show: '.recipe *',
+    show: '.recipe',
     hide: '.post'
   } ,
   {
     // smittenkitchen.com
     show: '.tasty-recipes, .tasty-recipes-image-shim',
     hide: '.entry-content'
-  }
+  } */
 ]
 
 addClass = (selector, classes) => {
@@ -54,9 +52,9 @@ addClassToElement = (elem, className) => {
 }
 
 findElemsToShow = (selectorPair) => {
-  let query = `${selectorPair.show}:not(${CSS_SHOW_CLASS})`
-  console.log(`Matching for ${selectorPair.show}...`)
-  console.log(document.querySelectorAll(query))
+  let query = `${selectorPair.show}`
+  // console.log(`Matching for ${selectorPair.show}...`)
+  // console.log(document.querySelectorAll(query))
   return document.querySelectorAll(query)
 }
 
@@ -67,39 +65,62 @@ findElemsToHide = (selectorPair) => {
   return document.querySelectorAll(query)
 }
 
-let selectorPairsToApply = []
-for (let i = 0; i < selectorPairs.length; i++) {
-  let selectorPair = selectorPairs[i]
-  let elemsToShowQuery = [], elemsToHideQuery = [],
-    elemsToShowStack = [], elemsToHideStack = []
-
-  elemsToShow = findElemsToShow(selectorPair)
-  if (elemsToShowQuery.length > 0) {
-    elemsToHide = findElemsToHide(selectorPair)
-    if (elemsToHideQuery.length > 0) {
-      selectorPairsToApply.push(selectorPair)
-      elemsToShowStack = [...elemsToShowStack, ...elemsToShowQuery]
-      elemsToHideStack = [...elemsToHideStack, ...elemsToHideQuery]
-    }
+findElemSiblings = (elems) => {
+  if (elems.length === 1) {
+    let el = elems[0]
+    // http://youmightnotneedjquery.com/#siblings
+    return Array.prototype.filter.call(el.parentNode.children, (child) => {
+      return child !== el
+    })
+  } else {
+    console.warn('Found multiple matches! Not support yet')
+    return []
   }
 }
-console.log('Final selector pairs to apply...')
-console.log(selectorPairsToApply)
 
+let elemsToShow = []
 
+for (let i = 0; i < selectorPairs.length; i++) {
+  elemsToShow = [...elemsToShow, ...findElemsToShow(selectorPairs[i])]
+}
 
-// add '.smtr-show' for all valid selectors[].show
-/* for (let i = 0; i < selectors.length; i++) {
-  let showSelector = `${selectors[i].show}:not(.${CSS_SHOW_CLASS})` // Avoid repeatedly adding 'show' class
-  let matches = addClass(showSelector, CSS_SHOW_CLASS)
-} */
-// Get the chosen 'show' selector's associated 'hide' selector, then apply it (them???)
+// console.log(`Final elems to show = `, elemsToShow)
 
-// add '.smtr-hide' for all valid selectors: .SHOW ~ selectors[].hide:not(.SHOW):not(.HIDE) (non-.SHOW/HIDE siblings of .SHOW with .HIDE)
-/* for (let i = 0; i < selectors.length; i++) {
-  let hideSelector = `${CSS_SHOW_CLASS} ~ ${selectors[i].hide}:not(.${CSS_SHOW_CLASS}):not(.${CSS_HIDE_CLASS})` // Ensure 'show' elems are not also tagged 'hidden'
-  addClass(hideSelector, CSS_HIDE_CLASS)
-} */
+/* Several cases may result: 0, 1, or 2+ elements may be found.
+  - 0 matches: do nothing
+  - 1 match: apply 'display:none' to siblings
+  - 2+ matches: check if matches are all siblings
+    - yes: proceed as if 1 match
+    - no: do nothing (tbc)
+*/
 
+switch (elemsToShow.length) {
+  case 0:
+    console.log('No valid recipe elements detected.')
+    break
 
-// Note: test whether to include first child or all children for both
+  case 1:
+    console.log('Found 1 recipe elem:', elemsToShow[0])
+    let siblings = findElemSiblings(elemsToShow)
+    console.log(`Found ${siblings.length} sibling elems`, siblings)
+
+    if (DEBUG_WITH_COLORS) {
+      // Highlight elems to show/hide instead of hiding them
+      // Note: this is not a foolproof debug, but can be helpful
+      // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
+      for (let i = 0; i < siblings.length; i++) {
+        siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
+      }
+      elemsToShow[0].style.backgroundColor = DEBUG_COLOR_SHOW
+    } else {
+      // Hide the unwanted elems
+      for (let i = 0; i < siblings.length; i++) {
+        siblings[i].style.display = 'none'
+      }
+    }
+    break
+  
+  default:
+    console.log(`Found ${elemsToShow.length} recipe elems:`)
+    console.log(elemsToShow)
+}
