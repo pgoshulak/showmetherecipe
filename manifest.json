@@ -19,7 +19,8 @@
   
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "tabs"
   ],
   
   
@@ -33,8 +34,11 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_end",
-      "css" : ["recipe.css"],
-      "js": ["content.js"]
+      "js": [
+        "js/data.js",
+        "js/content-hide-by-site.js",
+        "js/content-hide-by-selector.js"
+      ]
     }
   ]
 }
