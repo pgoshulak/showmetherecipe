@@ -7,10 +7,27 @@
         font-family: sans-serif;
         width: 200px;
       }
+      .url-hostname {
+        color: #1a1;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+      /* header {
+        width: 100%;
+        margin: 0;
+        padding: 4px;
+      } */
     </style>
   </head>
   <body>
-    <div id="message">Hello popup world!</div>
+    <header>
+      <h3>Show Me the Recipe!</h3>
+    </header>
+    <hr>
+    <div id="message">
+      <p>No recipe elements detected</p>
+    </div>
+    <a id="report-page-link" href="#">This site doesn't display right!</a>
     <script src="js/popup.js"></script>
   </body>
 </html>

@@ -9,9 +9,6 @@ const DEBUG_WITH_COLORS = false
 const DEBUG_COLOR_SHOW = 'rgba(102, 255, 102, 0.5)'
 const DEBUG_COLOR_HIDE = 'rgba(255, 102, 102, 0.5)'
 
-hideElem = (elem) => {
-  elem.style.display = 'none'
-}
 
 /* Non-working sites (links are sample posts)
 --- Single elem to hide ---

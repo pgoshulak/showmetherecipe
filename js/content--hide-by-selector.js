@@ -1,9 +1,7 @@
 /**
  * Content script to scan for CSS selectors that contain recipe content,
  * then hide sibling elements (ie. assumes siblings contain blog entry)
- * 
  */
-
 findElemsToShow = (query) => {
   // console.log(`Matching for ${selectorPair.show}...`)
   // console.log(document.querySelectorAll(query))

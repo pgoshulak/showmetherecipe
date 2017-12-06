@@ -6,9 +6,9 @@
   "author": "Peter Goshulak",
   // "default_locale": "en",
 
-  /* "background": {
+/*   "background": {
     "persistent": false,
-    "scripts": ["background.js"]
+    "scripts": ["js/background.js"]
   }, */
   
   "icons": {
@@ -35,9 +35,11 @@
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_end",
       "js": [
-        "js/data.js",
-        "js/content-hide-by-site.js",
-        "js/content-hide-by-selector.js"
+        "js/content--init.js",
+        "js/content--data.js" ,
+        "js/content--hide-by-site.js",
+        "js/content--hide-by-selector.js",
+        "js/content--messaging.js"
       ]
     }
   ]
