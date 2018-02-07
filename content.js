@@ -148,7 +148,7 @@ if (elemsToShow.length === 0) {
   } else {
     // Hide the unwanted elems - the main purpose!!!
     for (let i = 0; i < siblings.length; i++) {
-      siblings[i].style.display = 'none'
+      siblings[i].classList.add('smtr-hide')
     }
   }
 }
