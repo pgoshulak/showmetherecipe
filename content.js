@@ -2,7 +2,7 @@ const DEBUG_WITH_COLORS = false
 const DEBUG_COLOR_SHOW = 'rgba(102, 255, 102, 0.5)'
 const DEBUG_COLOR_HIDE = 'rgba(255, 102, 102, 0.5)'
 
-const selectorPairs = [
+const selectors = [
   {
     // pinchofyum.com
     // https://pinchofyum.com/green-curry
@@ -17,7 +17,7 @@ const selectorPairs = [
     hide: '.recipe-body*'
   },
   {
-    // foodiecrush.com
+    // foodiecrush.com, minimalistbaker.com
     // https://www.foodiecrush.com/spiralized-butternut-squash-and-apple-salad-with-turkey/
     show: '.easyrecipe',
     hide: '.entry_content'
@@ -115,69 +115,40 @@ findElemSiblings = (elems) => {
   }
 }
 
-let elemsToShow = []
 
-for (let i = 0; i < selectorPairs.length; i++) {
-  elemsToShow = [...elemsToShow, ...findElemsToShow(selectorPairs[i])]
+// Check all possible selectors for a match
+/* Note: could be made more efficient by matching to domain, but CSS selectors are 
+generic to the WordPress plugins. Therefore, we don't need to account for all
+DOMAINS but rather all PLUGINS ... much less effort
+*/
+let elemsToShow = []
+for (let i = 0; i < selectors.length; i++) {
+  elemsToShow = [...elemsToShow, ...findElemsToShow(selectors[i])]
 }
 
-// console.log(`Final elems to show = `, elemsToShow)
+if (elemsToShow.length === 0) {
+  console.log('No valid recipe elements detected.')
+} else {
+  console.log(`Found ${elemsToShow.length} recipe elems:`)
+  console.log(elemsToShow)
+  let siblings = findElemSiblings(elemsToShow)
+  console.log(`Found ${siblings.length} recipe sibling elems:`)
+  console.log(siblings)
 
-/* Several cases may result: 0, 1, or 2+ elements may be found.
-  - 0 matches: do nothing
-  - 1 match: apply 'display:none' to siblings
-  - 2+ matches: check if matches are all siblings
-    - yes: proceed as if 1 match
-    - no: do nothing (tbc)
-*/
-
-switch (elemsToShow.length) {
-  case 0:
-    console.log('No valid recipe elements detected.')
-    break
-
-/*   case 1:
-    console.log('Found 1 recipe elem:', elemsToShow[0])
-    let siblings = findElemSiblings(elemsToShow)
-    console.log(`Found ${siblings.length} sibling elems`, siblings)
-    
-    if (DEBUG_WITH_COLORS) {
-      // Highlight elems to show/hide instead of hiding them
-      // Note: this is not a foolproof debug, but can be helpful
-      // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
-      for (let i = 0; i < siblings.length; i++) {
-        siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
-      }
-      elemsToShow[0].style.backgroundColor = DEBUG_COLOR_SHOW
-    } else {
-      // Hide the unwanted elems
-      for (let i = 0; i < siblings.length; i++) {
-        siblings[i].style.display = 'none'
-      }
+  if (DEBUG_WITH_COLORS) {
+    // Highlight elems to show/hide instead of hiding them
+    // Note: this is not a foolproof debug, but can be helpful
+    // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
+    for (let i = 0; i < siblings.length; i++) {
+      siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
     }
-    break */
-    
-    default:
-    console.log(`Found ${elemsToShow.length} recipe elems:`)
-    console.log(elemsToShow)
-    let siblings = findElemSiblings(elemsToShow)
-    console.log(`Found ${siblings.length} sibling elems`, siblings)
-
-    if (DEBUG_WITH_COLORS) {
-      // Highlight elems to show/hide instead of hiding them
-      // Note: this is not a foolproof debug, but can be helpful
-      // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
-      for (let i = 0; i < siblings.length; i++) {
-        siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
-      }
-      for (let i = 0; i < elemsToShow.length; i++) {
-        elemsToShow[i].style.backgroundColor = DEBUG_COLOR_SHOW
-      }
-    } else {
-      // Hide the unwanted elems
-      for (let i = 0; i < siblings.length; i++) {
-        siblings[i].style.display = 'none'
-      }
+    for (let i = 0; i < elemsToShow.length; i++) {
+      elemsToShow[i].style.backgroundColor = DEBUG_COLOR_SHOW
     }
-    break
+  } else {
+    // Hide the unwanted elems - the main purpose!!!
+    for (let i = 0; i < siblings.length; i++) {
+      siblings[i].style.display = 'none'
+    }
+  }
 }
