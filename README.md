@@ -8,5 +8,5 @@ This extension intends to display only the recipe portion of recipe blog entries
 - set 'display:none' on the elements to hide (toggle via Chrome icon)
 
 # Todo:
-[ ] add website whitelist to localstorage
-[ ] add error reporting buttons (eg. 'blog doesn't hide', 'recipe is hidden too', etc)
+- [ ] add website whitelist to localstorage
+- [ ] add error reporting buttons (eg. 'blog doesn't hide', 'recipe is hidden too', etc)
