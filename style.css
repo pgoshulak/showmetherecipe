@@ -1,0 +1,15 @@
+#success-message {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  background-color: #43A047;
+  color: #EEE;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 4px;
+  transition: 0.2s ease all;
+  font-size: 13px;
+  font-family: arial, sans-serif;
+  line-height: 18px;
+  z-index: 99999 !important;
+}
