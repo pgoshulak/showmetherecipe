@@ -1,3 +1,4 @@
+const SUCCESS_MESSAGE_TIMEOUT = 3000
 const DEBUG_WITH_COLORS = false
 const DEBUG_COLOR_SHOW = 'rgba(102, 255, 102, 0.5)'
 const DEBUG_COLOR_HIDE = 'rgba(255, 102, 102, 0.5)'
@@ -134,6 +135,7 @@ if (elemsToShow.length === 0) {
   let siblings = findElemSiblings(elemsToShow)
   console.log(`Found ${siblings.length} recipe sibling elems:`)
   console.log(siblings)
+  showSuccessMessage()
 
   if (DEBUG_WITH_COLORS) {
     // Highlight elems to show/hide instead of hiding them
@@ -151,4 +153,14 @@ if (elemsToShow.length === 0) {
       siblings[i].classList.add('smtr-hide')
     }
   }
+}
+
+function showSuccessMessage () {
+  var elem = document.createElement('div')
+  elem.setAttribute('id', 'success-message')
+  elem.innerHTML = '<strong>Show Me the Recipe!</strong><br>Detected recipe blog for hiding!'
+  document.body.appendChild(elem)
+  setTimeout(function(){
+    elem.style.opacity = 0
+  }, SUCCESS_MESSAGE_TIMEOUT)
 }

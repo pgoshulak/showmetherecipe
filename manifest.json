@@ -32,6 +32,7 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_end",
+      "css": ["style.css"],
       "js": ["content.js", "content-hide.js"]
     }
   ]
