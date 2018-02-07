@@ -3,7 +3,7 @@ This extension intends to display only the recipe portion of recipe blog entries
 
 # Program Flow
 - scan for valid recipe elements to determine the plugin used (eg. '.tasty-recipes')
-- scan for the recipe's sibling elements, which should contain the blog post (eg. <p>, <img>)
+- scan for the recipe's sibling elements, which should contain the blog post (eg. &lt;p>, &lt;img>)
 - apply CSS class to these sibling (non-recipe) elements, marking them for hiding
 - set 'display:none' on the elements to hide (toggle via Chrome icon)
 
