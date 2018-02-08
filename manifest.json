@@ -4,7 +4,6 @@
   "description": "Skip the life story on recipe blogs and get what you came for - the recipe!",
   "version": "1.0.0",
   "author": "Peter Goshulak",
-  // "default_locale": "en",
 
   "background": {
     "persistent": false,
