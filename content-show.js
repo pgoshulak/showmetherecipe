@@ -1,4 +1,4 @@
-var elems = document.getElementsByClassName('smtr-blog')
-for (var i = 0; i < elems.length; i++) {
-  elems[i].style.display = 'initial'
+var blogElems = document.getElementsByClassName('smtr-blog')
+for (var i = 0; i < blogElems.length; i++) {
+  blogElems[i].style.display = 'initial'
 }
