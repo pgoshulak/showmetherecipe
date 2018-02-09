@@ -1,7 +1,9 @@
 const SUCCESS_MESSAGE_TIMEOUT = 3000
-const DEBUG_WITH_COLORS = false
-const DEBUG_COLOR_SHOW = 'rgba(102, 255, 102, 0.5)'
-const DEBUG_COLOR_HIDE = 'rgba(255, 102, 102, 0.5)'
+const CSS_CLASS_RECIPE = 'smtr-recipe'
+const CSS_CLASS_BLOG = 'smtr-blog'
+const DEBUG_WITH_COLORS = true
+const DEBUG_COLOR_RECIPE = 'rgba(102, 255, 102, 0.5)'
+const DEBUG_COLOR_BLOG = 'rgba(255, 102, 102, 0.5)'
 
 const selectors = [
   {
@@ -78,7 +80,7 @@ http://www.greenkitchenstories.com/green-peanut-butter-sandwich-smoothie/ --> ju
 http://thefirstmess.com/2012/02/19/almond-sweet-potato-biscuits-mushroom-gravy/ --> bunch of p's
 */
 
-findElemsToShow = (selectorPair) => {
+findElems = (selectorPair) => {
   let query = `${selectorPair.show}`
   // console.log(`Matching for ${selectorPair.show}...`)
   // console.log(document.querySelectorAll(query))
@@ -122,43 +124,51 @@ findElemSiblings = (elems) => {
 generic to the WordPress plugins. Therefore, we don't need to account for all
 DOMAINS but rather all PLUGINS ... much less effort
 */
-let elemsToShow = []
+let recipeElems = []
 for (let i = 0; i < selectors.length; i++) {
-  elemsToShow = [...elemsToShow, ...findElemsToShow(selectors[i])]
+  recipeElems = [...recipeElems, ...findElems(selectors[i])]
 }
 
-if (elemsToShow.length === 0) {
+if (recipeElems.length === 0) {
   console.log('No valid recipe elements detected.')
 } else {
-  console.log(`Found ${elemsToShow.length} recipe elems:`)
-  console.log(elemsToShow)
-  let siblings = findElemSiblings(elemsToShow)
-  console.log(`Found ${siblings.length} recipe sibling elems:`)
-  console.log(siblings)
+  console.log(`Found ${recipeElems.length} recipe elems:`)
+  console.log(recipeElems)
+  let blogElems = findElemSiblings(recipeElems)
+  console.log(`Found ${blogElems.length} recipe sibling elems:`)
+  console.log(blogElems)
   showSuccessMessage()
+
+  // Mark blog elements with css class
+  for (let i = 0; i < blogElems.length; i++) {
+    blogElems[i].classList.add(CSS_CLASS_BLOG)
+  }
+  // Mark recipe elements with css class
+  for (let i = 0; i < recipeElems.length; i++) {
+    recipeElems[i].classList.add(CSS_CLASS_RECIPE)
+  }
 
   if (DEBUG_WITH_COLORS) {
     // Highlight elems to show/hide instead of hiding them
     // Note: this is not a foolproof debug, but can be helpful
     // Eg. sometimes the 'show' elements won't highlight since the text elems are nested
-    for (let i = 0; i < siblings.length; i++) {
-      siblings[i].style.backgroundColor = DEBUG_COLOR_HIDE
+    /* for (let i = 0; i < blogElems.length; i++) {
+      blogElems[i].style.backgroundColor = DEBUG_COLOR_BLOG
     }
-    for (let i = 0; i < elemsToShow.length; i++) {
-      elemsToShow[i].style.backgroundColor = DEBUG_COLOR_SHOW
-    }
-  } else {
-    // Hide the unwanted elems - the main purpose!!!
-    for (let i = 0; i < siblings.length; i++) {
-      siblings[i].classList.add('smtr-hide')
-    }
-  }
+    for (let i = 0; i < recipeElems.length; i++) {
+      recipeElems[i].style.backgroundColor = DEBUG_COLOR_RECIPE
+    } */
+    let css = document.createElement('style')
+    css.type = 'text/css'
+    css.innerHTML = ` .${CSS_CLASS_RECIPE} { background-color: ${DEBUG_COLOR_RECIPE} !important} .${CSS_CLASS_BLOG} { background-color: ${DEBUG_COLOR_BLOG} !important}`
+    document.body.appendChild(css)
+  } 
 }
 
 function showSuccessMessage () {
   var elem = document.createElement('div')
   elem.setAttribute('id', 'success-message')
-  elem.innerHTML = '<strong>Show Me the Recipe!</strong><br>Detected recipe blog for hiding!'
+  elem.innerHTML = '<strong>Show Me the Recipe!</strong><br>Detected recipe blog!'
   document.body.appendChild(elem)
   setTimeout(function(){
     elem.style.opacity = 0
