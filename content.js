@@ -1,7 +1,7 @@
 const SUCCESS_MESSAGE_TIMEOUT = 3000
 const CSS_CLASS_RECIPE = 'smtr-recipe'
 const CSS_CLASS_BLOG = 'smtr-blog'
-const DEBUG_WITH_COLORS = true
+const DEBUG_WITH_COLORS = false
 const DEBUG_COLOR_RECIPE = 'rgba(102, 255, 102, 0.5)'
 const DEBUG_COLOR_BLOG = 'rgba(255, 102, 102, 0.5)'
 

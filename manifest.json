@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Show Me The Recipe!",
   "description": "Skip the life story on recipe blogs and get what you came for - the recipe!",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Peter Goshulak",
   
   "icons": {

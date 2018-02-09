@@ -1,28 +1,26 @@
 # About
-This extension intends to display only the recipe portion of recipe blog entries. It does so using CSS selectors to find valid recipe elements (checking a variety of popular Wordpress recipe plugins) and applying CSS classes to hide blog entry content. It is similar in purpose to the 'scroll to recipe' button many sites have, but skips that interaction 
+This extension intends to bring focus to the recipe portion of recipe blog entries. It does so using CSS selectors to find valid recipe elements (checking a variety of popular Wordpress recipe plugins) and applying CSS classes to mark content as 'recipe' or 'blog'. It is similar in purpose to the 'scroll to recipe' button many sites have, but skips that interaction.
+
+Not all sites work, and some sites may never work (barring fancy NLP upgrades), since the recipes are not formatted according to common recipe plugins. 
 
 # Program Flow
 - scan for valid recipe elements to determine the plugin used (eg. '.tasty-recipes')
 - scan for the recipe's sibling elements, which should contain the blog post (eg. &lt;p>, &lt;img>)
-- apply CSS class to these sibling (non-recipe) elements, marking them for hiding
-- set 'display:none' on the elements to hide (toggle via Chrome icon)
+- apply a generic CSS class to both recipe and sibling (blog) elements
+- move each recipe element to before its first sibling (eg. div.recipe before p.blog)
 
 # Todo:
 - [ ] add website whitelist to localstorage
-- [ ] add error reporting buttons (eg. 'blog doesn't hide', 'recipe is hidden too', etc)
+- [ ] add error reporting buttons
 
 # Chrome Store Description
 The 'Adblock' for recipe blogs! When you just need to know how many eggs, but don't want to read about the divorce.
 
-This extension hides blog posts and images from many popular food blog sites, making the recipe the main focus. 
-
-We believe that food bloggers have a tough enough job, generating a fresh stream of recipes on a weekly basis. However, the mandatory blog post preceding the recipe doesn't add value for some site visitors, and is often a nuisance to bypass. We chose to give you site traffic for the recipe, so let that be the star of the show!
-
-Want to see the blog post? Click the icon to temporarily reveal the entire page.
+This extension finds the actual recipe on many* popular recipe blogs, and brings it to the top of the page - no more scrolling to the bottom to get what you came for.
 
 Think the author's blog post should take precedence over the recipe? Don't install this extension.
 
 SUPPORT:
-- website doesn't hide the blog post as promised?
-- recipe itself is hidden as well?
-Contact the support email below and we'll fix it ASAP
+Recipe isn't above the blog as promised? Something else went wrong? Contact the support email below and we'll fix it ASAP
+
+* Please note: We are working on getting as many to work as possible, but some sites can't be affected for technical reasons. Let us know and we'll do our best!
