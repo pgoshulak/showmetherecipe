@@ -66,7 +66,7 @@ for (let i = 0; i < selectors.length; i++) {
 }
 
 if (recipeElems.length === 0) {
-  console.log('No valid recipe elements detected.')
+  // console.log('No valid recipe elements detected.')
 } else {
   console.log(`Found ${recipeElems.length} recipe elems:`)
   console.log(recipeElems)
